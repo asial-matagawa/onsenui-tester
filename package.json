@@ -1,0 +1,15 @@
+{
+  "name": "onsenui-tester",
+  "version": "0.1.0-dev",
+  "description": "Tool for testing Onsen UI-related things with preset or user-defined test cases.",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "subcommands"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Naoki Matagawa",
+  "license": "MIT"
+}
