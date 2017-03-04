@@ -11,5 +11,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Naoki Matagawa",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^2.9.0"
+  }
 }
