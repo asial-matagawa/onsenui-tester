@@ -1,8 +1,11 @@
+const program = require('commander');
 const core = require('./subcommands/core.js');
 
-const args = process.argv.slice(2);
+program
+  .version(require('./package.json').version)
 
-switch (args[0]) {
-  case 'core':
-    core();
-}
+program
+  .command('core')
+  .action(core);
+
+program.parse(process.argv);
