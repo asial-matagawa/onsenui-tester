@@ -4,8 +4,7 @@
   "description": "Tool for testing Onsen UI-related things with preset or user-defined test cases.",
   "main": "index.js",
   "files": [
-    "index.js",
-    "subcommands"
+    "*.js"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
