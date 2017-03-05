@@ -30,9 +30,11 @@ const createTesterArguments = (target, testcase) => {
 
 module.exports = (program) => {
   return (env, options) => {
-    const targets = resolveTarget(program.target);
-    const testers = resolveTester(program.tester);
-    const testcases = resolveTestcase(program.testcase);
+    const [targets, testers, testcases] = [
+      resolveTarget(program.target),
+      resolveTester(program.tester),
+      resolveTestcase(program.testcase),
+    ];
 
     for (const target of targets) {
       for (const tester of testers) {
