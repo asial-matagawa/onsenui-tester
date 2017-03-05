@@ -1,10 +1,15 @@
 const path = require('path');
+const process = require('process');
 const program = require('commander');
 
 program
   .option('-T, --target')
   .option('-t, --tester')
-  .option('-c, --testcase');
+  .option('-c, --testcase')
+  .option('-o, --outDir <path>', 'set output directory. defaults to current directory',
+    val => path.resolve(val), // coerce
+    path.resolve(process.cwd()) // default value
+  );
 
 program.parse(process.argv);
 
