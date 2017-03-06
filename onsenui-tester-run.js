@@ -129,26 +129,6 @@ const resolveTestcase = (testcaseString) => {
       id: 'case1',
       path: path.resolve(__dirname, 'preset-tester/core-file-check/preset-testcase/case1'),
     },
-    {
-      id: 'case2',
-      path: path.resolve(__dirname, 'preset-tester/core-file-check/preset-testcase/case2'),
-    },
-    {
-      id: 'case3',
-      path: path.resolve(__dirname, 'preset-tester/core-file-check/preset-testcase/case3'),
-    },
-    {
-      id: 'case4',
-      path: path.resolve(__dirname, 'preset-tester/core-file-check/preset-testcase/case4'),
-    },
-    {
-      id: 'case5',
-      path: path.resolve(__dirname, 'preset-tester/core-file-check/preset-testcase/case5'),
-    },
-    {
-      id: 'case6',
-      path: path.resolve(__dirname, 'preset-tester/core-file-check/preset-testcase/case6'),
-    },
   ];
 };
 
