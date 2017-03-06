@@ -55,10 +55,10 @@ const resolveTestcase = (testcaseString) => {
   ];
 };
 
-const createTesterInput = (target, testcase, outDir) => {
+const createTesterInput = (target, testcaseDirPath, outDir) => {
   return {
     target: target,
-    testcase: testcase,
+    testcaseDirPath: testcaseDirPath,
     outDir: outDir,
   };
 };
