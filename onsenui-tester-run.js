@@ -122,11 +122,11 @@ const getCanonicalPackages = (target) => {
   return canonicalPackages;
 };
 
-const cacheCanonicalPackage = async (targetOutDir, canonicalPackage) => {
+const cacheCanonicalPackage = async (targetCacheDir, canonicalPackage) => {
   switch (canonicalPackage._type) {
     case 'npm': {
-      const temporaryDirForNpm = path.resolve(targetOutDir, 'temporary', 'npm'); // Temporary directory for `npm`
-      const canonicalPackageCacheDir = path.resolve(targetOutDir, 'npm-package', canonicalPackage.name, canonicalPackage.version);
+      const temporaryDirForNpm = path.resolve(targetCacheDir, 'temporary', 'npm'); // Temporary directory for `npm`
+      const canonicalPackageCacheDir = path.resolve(targetCacheDir, 'npm-package', canonicalPackage.name, canonicalPackage.version);
 
       // Download npm package as needed
       if (fs.existsSync(canonicalPackageCacheDir)) {
@@ -182,7 +182,7 @@ const createTesterInput = (target, tester, testcase, outDir) => {
     tester: tester,
     testcase: testcase,
     globalOutDir: outDir,
-    targetOutDir: path.resolve(outDir, 'target'),
+    targetCacheDir: path.resolve(outDir, 'target-cache'),
     testerOutDir: path.resolve(outDir, 'tester-sandbox', tester.id),
     testcaseOutDir: path.resolve(outDir, 'tester-sandbox', tester.id, 'testcase-sandbox', testcase.id),
   };
@@ -212,7 +212,7 @@ const [targets, testers, testcases] = [
 
     console.log(`Caching required canonical packages...`);
     for (const canonicalPackage of requiredCanonicalPackages) {
-      await cacheCanonicalPackage(path.resolve(program.outDir, 'target'), canonicalPackage);
+      await cacheCanonicalPackage(path.resolve(program.outDir, 'target-cache'), canonicalPackage);
     }
 
     for (const tester of testers) {
