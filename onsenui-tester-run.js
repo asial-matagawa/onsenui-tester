@@ -56,11 +56,13 @@ const [targets, testerDirPaths, testcaseDirPaths] = [
   resolveTestcase(program.testcase),
 ];
 
-// Directly launch testers with targets and testcases information
-for (const target of targets) {
-  for (const testerDirPath of testerDirPaths) {
-    for (const testcaseDirPath of testcaseDirPaths) {
-      launchTester(testerDirPath, createTesterInput(target, testcaseDirPath, program.outDir));
+{// Test and get result
+  // Directly launch testers with targets and testcases information
+  for (const target of targets) {
+    for (const testerDirPath of testerDirPaths) {
+      for (const testcaseDirPath of testcaseDirPaths) {
+        launchTester(testerDirPath, createTesterInput(target, testcaseDirPath, program.outDir));
+      }
     }
   }
 }
