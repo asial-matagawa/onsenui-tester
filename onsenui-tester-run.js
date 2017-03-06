@@ -79,6 +79,7 @@ const resolveTestcase = (testcaseString) => {
 const createTesterInput = (target, tester, testcase, outDir) => {
   return {
     target: target,
+    tester: tester,
     testcase: testcase,
     globalOutDir: outDir,
     targetOutDir: path.resolve(outDir, 'target'),
