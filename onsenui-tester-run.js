@@ -1,5 +1,6 @@
 const path = require('path');
 const process = require('process');
+const fs = require('fs');
 const program = require('commander');
 
 program
@@ -119,6 +120,25 @@ const getCanonicalPackages = (target) => {
   return canonicalPackages;
 };
 
+const cacheCanonicalPackage = (targetOutDir, canonicalPackage) => {
+  switch (canonicalPackage._type) {
+    case 'npm': {
+      const canonicalPackagePath = path.resolve(targetOutDir, 'npm-package', canonicalPackage.name, canonicalPackage.version);
+
+      if (fs.existsSync(canonicalPackagePath)) {
+        console.log(`npm package \`${canonicalPackage.name}@${canonicalPackage.version}\` is already cached. Skipped.`);
+      } else {
+        console.log(`npm package \`${canonicalPackage.name}@${canonicalPackage.version}\` is not cached.`);
+        console.log(`Caching npm package \`${canonicalPackage.name}@${canonicalPackage.version}\`...`);
+        // npm install
+      }
+      break;
+    }
+    default:
+      throw new Error(`Unknown canonical package type: ${canonicalPackage._type}`);
+  }
+};
+
 const createTesterInput = (target, tester, testcase, outDir) => {
   return {
     target: target,
@@ -150,7 +170,13 @@ const [targets, testers, testcases] = [
   for (const target of targets) {
     console.log(`Testing target ${JSON.stringify(target)}...`);
 
-    console.log(`Required canonical packages: ${JSON.stringify(getCanonicalPackages(target))}`);
+    const requiredCanonicalPackages = getCanonicalPackages(target);
+    console.log(`Required canonical packages: ${JSON.stringify(requiredCanonicalPackages)}`);
+
+    console.log(`Caching required canonical packages...`);
+    for (const canonicalPackage of requiredCanonicalPackages) {
+      cacheCanonicalPackage(path.resolve(program.outDir, 'target'), canonicalPackage);
+    }
 
     for (const tester of testers) {
       for (const testcase of testcases) {
