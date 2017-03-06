@@ -76,6 +76,49 @@ const resolveTestcase = (testcaseString) => {
   ];
 };
 
+const getCanonicalPackages = (target) => {
+  let canonicalPackages = [];
+
+  for (const packageId of Object.keys(target)){
+    switch (packageId) {
+      case 'css-components':
+        canonicalPackages.push({_type: 'npm', name: 'onsenui', version: target[packageId]});
+        break;
+      case 'core':
+        canonicalPackages.push({_type: 'npm', name: 'onsenui', version: target[packageId]});
+        break;
+      case 'angular-onsenui':
+        canonicalPackages.push({_type: 'npm', name: 'onsenui', version: target[packageId]});
+        break;
+      case 'angular2-onsenui':
+        canonicalPackages.push({_type: 'npm', name: 'angular2-onsenui', version: target[packageId]});
+        break;
+      case 'react-onsenui':
+        canonicalPackages.push({_type: 'npm', name: 'react-onsenui', version: target[packageId]});
+        break;
+      case 'vue-onsenui':
+        canonicalPackages.push({_type: 'npm', name: 'vue-onsenui', version: target[packageId]});
+        break;
+      default:
+        throw new Error(`Unknown package: ${packageId}`);
+    }
+  }
+
+  // Remove duplicate values
+  canonicalPackages = canonicalPackages.filter((canonicalPackage, index, array) => {
+      const foundIndex = array.findIndex(v => {
+        return v._type === canonicalPackage._type
+          && v.name === canonicalPackage.name
+          && v.version === canonicalPackage.version;
+      });
+
+      return foundIndex === index;
+    }
+  );
+
+  return canonicalPackages;
+};
+
 const createTesterInput = (target, tester, testcase, outDir) => {
   return {
     target: target,
@@ -105,6 +148,10 @@ const [targets, testers, testcases] = [
 {// Test and get result
   // Directly launch testers with targets and testcases information
   for (const target of targets) {
+    console.log(`Testing target ${JSON.stringify(target)}...`);
+
+    console.log(`Required canonical packages: ${JSON.stringify(getCanonicalPackages(target))}`);
+
     for (const tester of testers) {
       for (const testcase of testcases) {
         launchTester(tester, createTesterInput(target, tester, testcase, program.outDir));
