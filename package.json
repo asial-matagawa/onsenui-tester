@@ -12,6 +12,7 @@
   "author": "Naoki Matagawa",
   "license": "MIT",
   "dependencies": {
-    "commander": "^2.9.0"
+    "commander": "^2.9.0",
+    "npm": "^4.3.0"
   }
 }
