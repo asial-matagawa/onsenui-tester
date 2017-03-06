@@ -41,8 +41,8 @@ const resolveTarget = (targetString) => {
 const resolveTester = (testerString) => {
   return [
     {
-      id: 'direct-use',
-      path: path.resolve(__dirname, 'preset-tester/direct-use'),
+      id: 'core-file-check',
+      path: path.resolve(__dirname, 'preset-tester/core-file-check'),
     },
   ];
 };
@@ -51,27 +51,27 @@ const resolveTestcase = (testcaseString) => {
   return [
     {
       id: 'case1',
-      path: path.resolve(__dirname, 'preset-tester/direct-use/preset-testcase/case1'),
+      path: path.resolve(__dirname, 'preset-tester/core-file-check/preset-testcase/case1'),
     },
     {
       id: 'case2',
-      path: path.resolve(__dirname, 'preset-tester/direct-use/preset-testcase/case2'),
+      path: path.resolve(__dirname, 'preset-tester/core-file-check/preset-testcase/case2'),
     },
     {
       id: 'case3',
-      path: path.resolve(__dirname, 'preset-tester/direct-use/preset-testcase/case3'),
+      path: path.resolve(__dirname, 'preset-tester/core-file-check/preset-testcase/case3'),
     },
     {
       id: 'case4',
-      path: path.resolve(__dirname, 'preset-tester/direct-use/preset-testcase/case4'),
+      path: path.resolve(__dirname, 'preset-tester/core-file-check/preset-testcase/case4'),
     },
     {
       id: 'case5',
-      path: path.resolve(__dirname, 'preset-tester/direct-use/preset-testcase/case5'),
+      path: path.resolve(__dirname, 'preset-tester/core-file-check/preset-testcase/case5'),
     },
     {
       id: 'case6',
-      path: path.resolve(__dirname, 'preset-tester/direct-use/preset-testcase/case6'),
+      path: path.resolve(__dirname, 'preset-tester/core-file-check/preset-testcase/case6'),
     },
   ];
 };
