@@ -24,13 +24,13 @@ const resolveTarget = (targetString) => {
 
 const resolveTester = (testerString) => {
   return [
-    path.resolve(__dirname, './tester/direct-use', './index.js'),
+    path.resolve(__dirname, './preset-tester/direct-use', './index.js'),
   ];
 };
 
 const resolveTestcase = (testcaseString) => {
   return [
-    path.resolve(__dirname, './tester/direct-use/testcase/case1'),
+    path.resolve(__dirname, './preset-tester/direct-use/preset-testcase/case1'),
   ];
 };
 
