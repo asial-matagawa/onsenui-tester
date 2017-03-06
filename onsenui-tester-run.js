@@ -24,7 +24,7 @@ const resolveTarget = (targetString) => {
 
 const resolveTester = (testerString) => {
   return [
-    path.resolve(__dirname, 'preset-tester/direct-use', 'index.js'),
+    path.resolve(__dirname, 'preset-tester/direct-use'),
   ];
 };
 
@@ -43,7 +43,10 @@ const createTesterInput = (target, testcase, outDir) => {
 };
 
 const launchTester = (tester, input) => {
-  require(tester)(input);
+  const testerMetadata = require(path.resolve(tester, 'tester.metadata.json'));
+  const testerModule = require(path.resolve(tester, testerMetadata.main));
+
+  testerModule(input);
 }
 
 // Resolve arguments
