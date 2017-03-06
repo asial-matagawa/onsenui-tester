@@ -34,13 +34,19 @@ const resolveTestcase = (testcaseString) => {
   ];
 };
 
-const createTesterArguments = (target, testcase) => {
+const createTesterInput = (target, testcase, outDir) => {
   return {
-    'target': JSON.stringify(target),
-    'testcase': JSON.stringify(testcase),
+    target: target,
+    testcase: testcase,
+    outDir: outDir,
   };
 };
 
+const launchTester = (tester, input) => {
+  require(tester)(input);
+}
+
+// Resolve arguments
 const [targets, testers, testcases] = [
   resolveTarget(program.target),
   resolveTester(program.tester),
@@ -50,6 +56,7 @@ const [targets, testers, testcases] = [
 for (const target of targets) {
   for (const tester of testers) {
     for (const testcase of testcases) {
+      launchTester(tester, createTesterInput(target, testcase, program.outDir));
     }
   }
 }
