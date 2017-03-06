@@ -1,6 +1,8 @@
 const path = require('path');
 const process = require('process');
+const childProcess = require('child_process');
 const fs = require('fs');
+const fse = require('fs-extra');
 const program = require('commander');
 
 program
@@ -120,17 +122,52 @@ const getCanonicalPackages = (target) => {
   return canonicalPackages;
 };
 
-const cacheCanonicalPackage = (targetOutDir, canonicalPackage) => {
+const cacheCanonicalPackage = async (targetOutDir, canonicalPackage) => {
   switch (canonicalPackage._type) {
     case 'npm': {
-      const canonicalPackagePath = path.resolve(targetOutDir, 'npm-package', canonicalPackage.name, canonicalPackage.version);
+      const temporaryDirForNpm = path.resolve(targetOutDir, 'temporary', 'npm'); // Temporary directory for `npm`
+      const canonicalPackageCacheDir = path.resolve(targetOutDir, 'npm-package', canonicalPackage.name, canonicalPackage.version);
 
-      if (fs.existsSync(canonicalPackagePath)) {
+      // Download npm package as needed
+      if (fs.existsSync(canonicalPackageCacheDir)) {
         console.log(`npm package \`${canonicalPackage.name}@${canonicalPackage.version}\` is already cached. Skipped.`);
       } else {
         console.log(`npm package \`${canonicalPackage.name}@${canonicalPackage.version}\` is not cached.`);
         console.log(`Caching npm package \`${canonicalPackage.name}@${canonicalPackage.version}\`...`);
-        // npm install
+        
+        // Use local installed `npm`
+        const npmPackagePath = require.resolve('npm');
+        //console.log(npmPackagePath);
+
+        // Download npm package to a temporary directory
+        await (() => new Promise((resolve, reject) => {
+          childProcess.spawn(
+            'node',
+            [
+              npmPackagePath,
+              'install',
+              `--global`,
+              `--prefix`,
+              `${temporaryDirForNpm}`,
+              `${canonicalPackage.name}@${canonicalPackage.version}`,
+            ],
+            {
+              stdio: 'inherit'
+            }
+          )
+          .once('exit', code => {
+            resolve();
+          });
+        }))();
+
+        // Move the downloaded package to the target cache directory
+        fse.copySync(
+          path.resolve(temporaryDirForNpm, 'lib', 'node_modules', canonicalPackage.name),
+          canonicalPackageCacheDir
+        );
+
+        // Remove temporary directory for `npm`
+        fse.removeSync(temporaryDirForNpm);
       }
       break;
     }
@@ -165,7 +202,7 @@ const [targets, testers, testcases] = [
   resolveTestcase(program.testcase),
 ];
 
-{// Test and get result
+(async () => {// Test and get result
   // Directly launch testers with targets and testcases information
   for (const target of targets) {
     console.log(`Testing target ${JSON.stringify(target)}...`);
@@ -175,7 +212,7 @@ const [targets, testers, testcases] = [
 
     console.log(`Caching required canonical packages...`);
     for (const canonicalPackage of requiredCanonicalPackages) {
-      cacheCanonicalPackage(path.resolve(program.outDir, 'target'), canonicalPackage);
+      await cacheCanonicalPackage(path.resolve(program.outDir, 'target'), canonicalPackage);
     }
 
     for (const tester of testers) {
@@ -184,4 +221,4 @@ const [targets, testers, testcases] = [
       }
     }
   }
-}
+})();
