@@ -42,24 +42,24 @@ const createTesterInput = (target, testcase, outDir) => {
   };
 };
 
-const launchTester = (tester, input) => {
-  const testerMetadata = require(path.resolve(tester, 'tester.metadata.json'));
-  const testerModule = require(path.resolve(tester, testerMetadata.main));
+const launchTester = (testerDirPath, input) => {
+  const testerMetadata = require(path.resolve(testerDirPath, 'tester.metadata.json'));
+  const testerModule = require(path.resolve(testerDirPath, testerMetadata.main));
 
   testerModule(input);
 }
 
 // Resolve arguments
-const [targets, testers, testcases] = [
+const [targets, testerDirPaths, testcaseDirPaths] = [
   resolveTarget(program.target),
   resolveTester(program.tester),
   resolveTestcase(program.testcase),
 ];
 
 for (const target of targets) {
-  for (const tester of testers) {
-    for (const testcase of testcases) {
-      launchTester(tester, createTesterInput(target, testcase, program.outDir));
+  for (const testerDirPath of testerDirPaths) {
+    for (const testcaseDirPath of testcaseDirPaths) {
+      launchTester(testerDirPath, createTesterInput(target, testcaseDirPath, program.outDir));
     }
   }
 }
