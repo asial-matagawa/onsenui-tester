@@ -4,6 +4,7 @@ const childProcess = require('child_process');
 const fs = require('fs');
 const fse = require('fs-extra');
 const program = require('commander');
+const chalk = require('chalk');
 
 program
   .option('-T, --target')
@@ -130,10 +131,10 @@ const cacheCanonicalPackage = async (temporaryDir, targetCacheDir, canonicalPack
 
       // Download npm package as needed
       if (fs.existsSync(canonicalPackageCacheDir)) {
-        console.log(`npm package \`${canonicalPackage.name}@${canonicalPackage.version}\` is already cached. Skipped.`);
+        console.log(chalk.green(`npm package ${chalk.blue(`\`${canonicalPackage.name}@${canonicalPackage.version}\``)} is already cached. Skipped.`));
       } else {
-        console.log(`npm package \`${canonicalPackage.name}@${canonicalPackage.version}\` is not cached.`);
-        console.log(`Caching npm package \`${canonicalPackage.name}@${canonicalPackage.version}\`...`);
+        console.log(chalk.yellow(`npm package ${chalk.blue(`\`${canonicalPackage.name}@${canonicalPackage.version}\``)} is not cached.`));
+        console.log(`Caching npm package ${chalk.blue(`\`${canonicalPackage.name}@${canonicalPackage.version}\``)}...`);
         
         // Use local installed `npm`
         const npmPackagePath = require.resolve('npm');
@@ -205,10 +206,10 @@ const [targets, testers, testcases] = [
 (async () => {// Test and get result
   // Directly launch testers with targets and testcases information
   for (const target of targets) {
-    console.log(`Testing target ${JSON.stringify(target)}...`);
+    console.log(chalk.bold(`Testing ${chalk.blue(JSON.stringify(target))}...`));
 
     const requiredCanonicalPackages = getCanonicalPackages(target);
-    console.log(`Required canonical packages: ${JSON.stringify(requiredCanonicalPackages)}`);
+    console.log(`Required canonical packages: ${chalk.blue(JSON.stringify(requiredCanonicalPackages))}`);
 
     console.log(`Caching required canonical packages...`);
     for (const canonicalPackage of requiredCanonicalPackages) {
@@ -220,9 +221,12 @@ const [targets, testers, testcases] = [
     }
 
     for (const tester of testers) {
+      console.log(`Running ${chalk.magenta(tester.id)}...`);
       for (const testcase of testcases) {
         launchTester(tester, createTesterInput(target, tester, testcase, program.outDir));
       }
     }
+
+    console.log();
   }
 })();
