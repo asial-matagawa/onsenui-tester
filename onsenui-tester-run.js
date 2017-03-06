@@ -16,9 +16,25 @@ program.parse(process.argv);
 const resolveTarget = (targetString) => {
   return [
     {
+      'css-components': '2.0.2',
+      'core': '2.0.2',
+    },
+    {
+      'css-components': '2.0.3',
+      'core': '2.0.3',
+    },
+    {
+      'css-components': '2.0.4',
+      'core': '2.0.4',
+    },
+    {
+      'css-components': '2.0.5',
+      'core': '2.0.5',
+    },
+    {
       'css-components': '2.1.0',
       'core': '2.1.0',
-    }
+    },
   ];
 };
 
@@ -31,6 +47,11 @@ const resolveTester = (testerString) => {
 const resolveTestcase = (testcaseString) => {
   return [
     path.resolve(__dirname, 'preset-tester/direct-use/preset-testcase/case1'),
+    path.resolve(__dirname, 'preset-tester/direct-use/preset-testcase/case2'),
+    path.resolve(__dirname, 'preset-tester/direct-use/preset-testcase/case3'),
+    path.resolve(__dirname, 'preset-tester/direct-use/preset-testcase/case4'),
+    path.resolve(__dirname, 'preset-tester/direct-use/preset-testcase/case5'),
+    path.resolve(__dirname, 'preset-tester/direct-use/preset-testcase/case6'),
   ];
 };
 
