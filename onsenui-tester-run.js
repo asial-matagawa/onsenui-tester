@@ -76,11 +76,14 @@ const resolveTestcase = (testcaseString) => {
   ];
 };
 
-const createTesterInput = (target, testcase, outDir) => {
+const createTesterInput = (target, tester, testcase, outDir) => {
   return {
     target: target,
     testcase: testcase,
-    outDir: outDir,
+    globalOutDir: outDir,
+    targetOutDir: path.resolve(outDir, 'target'),
+    testerOutDir: path.resolve(outDir, 'tester-sandbox', tester.id),
+    testcaseOutDir: path.resolve(outDir, 'tester-sandbox', tester.id, 'testcase-sandbox', testcase.id),
   };
 };
 
@@ -103,7 +106,7 @@ const [targets, testers, testcases] = [
   for (const target of targets) {
     for (const tester of testers) {
       for (const testcase of testcases) {
-        launchTester(tester, createTesterInput(target, testcase, program.outDir));
+        launchTester(tester, createTesterInput(target, tester, testcase, program.outDir));
       }
     }
   }
