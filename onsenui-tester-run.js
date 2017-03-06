@@ -50,10 +50,6 @@ const [targets, testers, testcases] = [
 for (const target of targets) {
   for (const tester of testers) {
     for (const testcase of testcases) {
-      console.log(tester);
-      console.log(createTesterArguments(target, testcase));
-
-      // Spawn tester
     }
   }
 }
