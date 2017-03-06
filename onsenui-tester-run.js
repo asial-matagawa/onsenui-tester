@@ -56,6 +56,7 @@ const [targets, testerDirPaths, testcaseDirPaths] = [
   resolveTestcase(program.testcase),
 ];
 
+// Directly launch testers with targets and testcases information
 for (const target of targets) {
   for (const testerDirPath of testerDirPaths) {
     for (const testcaseDirPath of testcaseDirPaths) {
