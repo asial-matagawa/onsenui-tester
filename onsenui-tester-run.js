@@ -40,38 +40,59 @@ const resolveTarget = (targetString) => {
 
 const resolveTester = (testerString) => {
   return [
-    path.resolve(__dirname, 'preset-tester/direct-use'),
+    {
+      id: 'direct-use',
+      path: path.resolve(__dirname, 'preset-tester/direct-use'),
+    },
   ];
 };
 
 const resolveTestcase = (testcaseString) => {
   return [
-    path.resolve(__dirname, 'preset-tester/direct-use/preset-testcase/case1'),
-    path.resolve(__dirname, 'preset-tester/direct-use/preset-testcase/case2'),
-    path.resolve(__dirname, 'preset-tester/direct-use/preset-testcase/case3'),
-    path.resolve(__dirname, 'preset-tester/direct-use/preset-testcase/case4'),
-    path.resolve(__dirname, 'preset-tester/direct-use/preset-testcase/case5'),
-    path.resolve(__dirname, 'preset-tester/direct-use/preset-testcase/case6'),
+    {
+      id: 'case1',
+      path: path.resolve(__dirname, 'preset-tester/direct-use/preset-testcase/case1'),
+    },
+    {
+      id: 'case2',
+      path: path.resolve(__dirname, 'preset-tester/direct-use/preset-testcase/case2'),
+    },
+    {
+      id: 'case3',
+      path: path.resolve(__dirname, 'preset-tester/direct-use/preset-testcase/case3'),
+    },
+    {
+      id: 'case4',
+      path: path.resolve(__dirname, 'preset-tester/direct-use/preset-testcase/case4'),
+    },
+    {
+      id: 'case5',
+      path: path.resolve(__dirname, 'preset-tester/direct-use/preset-testcase/case5'),
+    },
+    {
+      id: 'case6',
+      path: path.resolve(__dirname, 'preset-tester/direct-use/preset-testcase/case6'),
+    },
   ];
 };
 
-const createTesterInput = (target, testcaseDirPath, outDir) => {
+const createTesterInput = (target, testcase, outDir) => {
   return {
     target: target,
-    testcaseDirPath: testcaseDirPath,
+    testcase: testcase,
     outDir: outDir,
   };
 };
 
-const launchTester = (testerDirPath, input) => {
-  const testerMetadata = require(path.resolve(testerDirPath, 'tester.metadata.json'));
-  const testerModule = require(path.resolve(testerDirPath, testerMetadata.main));
+const launchTester = (tester, input) => {
+  const testerMetadata = require(path.resolve(tester.path, 'tester.metadata.json'));
+  const testerModule = require(path.resolve(tester.path, testerMetadata.main));
 
   testerModule(input);
 }
 
 // Resolve arguments
-const [targets, testerDirPaths, testcaseDirPaths] = [
+const [targets, testers, testcases] = [
   resolveTarget(program.target),
   resolveTester(program.tester),
   resolveTestcase(program.testcase),
@@ -80,9 +101,9 @@ const [targets, testerDirPaths, testcaseDirPaths] = [
 {// Test and get result
   // Directly launch testers with targets and testcases information
   for (const target of targets) {
-    for (const testerDirPath of testerDirPaths) {
-      for (const testcaseDirPath of testcaseDirPaths) {
-        launchTester(testerDirPath, createTesterInput(target, testcaseDirPath, program.outDir));
+    for (const tester of testers) {
+      for (const testcase of testcases) {
+        launchTester(tester, createTesterInput(target, testcase, program.outDir));
       }
     }
   }
